@@ -2,7 +2,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
-    <title>Add Customer</title>
+    <title>Save Customer</title>
     <link type="text/css" rel="stylesheet"
           href="${pageContext.request.contextPath}/resources/css/style.css">
     <link type="text/css" rel="stylesheet"
@@ -16,9 +16,10 @@
 </div>
 
 <div id="container">
-    <h3>Add Customer</h3>
+    <h3>Save Customer</h3>
 
     <form:form action="saveCustomer" modelAttribute="customer" method="post">
+        <form:hidden path="id"/>
         <table>
             <tbody>
             <tr>

@@ -65,7 +65,7 @@
     <tx:annotation-driven transaction-manager="myTransactionManager"/>
 
     <!--mapping for resources folder-->
-    <mwc:resources mapping="/resources/**" location="/resources/"/>
+    <mwc:resources location="/resources/" mapping="/resources/**"/>
 
 </beans>
 

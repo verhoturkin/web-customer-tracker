@@ -4,7 +4,6 @@ package com.example.springdemo.repository;
 import com.example.springdemo.entity.Customer;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -24,9 +23,16 @@ public class CustomerDAOImpl implements CustomerDAO {
     public List<Customer> getCustomers() {
         //get session
         Session session = sessionFactory.getCurrentSession();
-        //create query for all customers
-        Query<Customer> query = session.createQuery("from Customer", Customer.class);
         //return query result list
-        return query.getResultList();
+        return session.createQuery("from Customer", Customer.class)
+                      .getResultList();
+    }
+
+    @Override
+    public void saveCustomer(Customer customer) {
+        //get session
+        Session session = sessionFactory.getCurrentSession();
+        //save customer
+        session.save(customer);
     }
 }

@@ -5,7 +5,10 @@ import com.example.springdemo.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/customer")
@@ -33,9 +36,14 @@ public class CustomerController {
     }
 
     @PostMapping("/saveCustomer")
-    public String saveCustomer(@ModelAttribute("customer") Customer customer) {
-        customerService.saveCustomer(customer);
-        return "redirect:/customer/list";
+    public String saveCustomer(@Valid @ModelAttribute("customer") Customer customer,
+                               BindingResult bindingResult) {
+        if (bindingResult.hasErrors())
+            return "customer-form";
+        else {
+            customerService.saveCustomer(customer);
+            return "redirect:/customer/list";
+        }
     }
 
     @GetMapping("/showFormForUpdate")

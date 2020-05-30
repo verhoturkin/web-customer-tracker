@@ -11,12 +11,7 @@
     <link type="text/css" rel="stylesheet"
           href="${ctx}/resources/css/add-customer-style.css">
 </head>
-<body>
-<div id="wrapper">
-    <div id="header">
-        <h2>CRM - Customer Relationship Manager</h2>
-    </div>
-</div>
+<%@include file="header.jsp" %>
 
 <div id="container">
     <h3>Login</h3>
@@ -31,10 +26,10 @@
                 </tr>
             </c:if>
             <c:if test="${param.logout != null}">
-            <tr>
-                <td><label></label></td>
-                <td> You have been logged out.</td>
-            </tr>
+                <tr>
+                    <td><label></label></td>
+                    <td> You have been logged out.</td>
+                </tr>
             </c:if>
             <tr>
                 <td><label>Username:</label></td>

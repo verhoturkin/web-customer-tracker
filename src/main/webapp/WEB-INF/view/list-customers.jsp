@@ -9,13 +9,13 @@
           href="${pageContext.request.contextPath}/resources/css/style.css">
 </head>
 <body>
-<div id="wrapper">
-    <div id="header">
-        <h2>CRM - Customer Relationship Manager</h2>
-    </div>
-</div>
+<%@include file="header.jsp" %>
 
 <div id="container">
+    <%@ include file="logged.jsp" %>
+
+    <h3>Customers list</h3>
+
     <div id="content">
 
         <sec:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
@@ -24,12 +24,11 @@
                    class="add-button">
         </sec:authorize>
 
-
-
         <form:form action="search" method="get">
             Search customer: <input type="text" name="searchName">
             <input type="submit" value="Search" class="add-button">
         </form:form>
+
 
         <table>
             <tr>
@@ -63,12 +62,6 @@
             </c:forEach>
         </table>
     </div>
-
-    <p></p>
-
-    <form:form action="${pageContext.request.contextPath}/logout" method="post">
-        <input type="submit" value="Logout" class="add-button"/>
-    </form:form>
 </div>
 
 

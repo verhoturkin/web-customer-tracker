@@ -12,13 +12,11 @@
           href="${ctx}/resources/css/add-customer-style.css">
 </head>
 <body>
-<div id="wrapper">
-    <div id="header">
-        <h2>CRM - Customer Relationship Manager</h2>
-    </div>
-</div>
+<%@include file="header.jsp" %>
 
 <div id="container">
+    <%@ include file="logged.jsp" %>
+
     <h3>Save Customer</h3>
 
     <form:form action="saveCustomer" modelAttribute="customer" method="post">

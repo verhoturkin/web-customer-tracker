@@ -10,7 +10,8 @@
     <packaging>war</packaging>
 
     <properties>
-        <springframework.version>5.1.9.RELEASE</springframework.version>
+        <springframework.version>5.2.6.RELEASE</springframework.version>
+        <springsecurity.version>5.3.2.RELEASE</springsecurity.version>
         <hibernate.version>5.4.16.Final</hibernate.version>
         <mysql.connector.version>8.0.20</mysql.connector.version>
         <c3po.version>0.9.5.2</c3po.version>
@@ -37,11 +38,35 @@
             <version>${springframework.version}</version>
         </dependency>
 
+        <!-- Spring security -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${springsecurity.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${springsecurity.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-taglibs</artifactId>
+            <version>${springsecurity.version}</version>
+        </dependency>
+
         <!-- Hibernate -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>${hibernate.version}</version>
+        </dependency>
+
+        <!-- Hibernate validator-->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>6.1.5.Final</version>
         </dependency>
 
         <!-- C3P0 -->
@@ -80,6 +105,14 @@
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
             <version>1.9.5</version>
+        </dependency>
+
+        <!-- Junit -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

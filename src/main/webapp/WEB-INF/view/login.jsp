@@ -5,7 +5,7 @@
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <html>
 <head>
-    <title>Save Customer</title>
+    <title>Login</title>
     <link type="text/css" rel="stylesheet"
           href="${ctx}/resources/css/style.css">
     <link type="text/css" rel="stylesheet"
@@ -19,38 +19,38 @@
 </div>
 
 <div id="container">
-    <h3>Save Customer</h3>
+    <h3>Login</h3>
 
-    <form:form action="saveCustomer" modelAttribute="customer" method="post">
-        <form:hidden path="id"/>
+    <form:form action="${ctx}/authUser" method="post">
         <table>
             <tbody>
+            <c:if test="${param.error != null}">
+                <tr>
+                    <td><label></label></td>
+                    <td>Invalid username and password.</td>
+                </tr>
+            </c:if>
+            <c:if test="${param.logout != null}">
             <tr>
-                <td><label>First name:</label></td>
-                <td><form:input path="firstName"/></td>
+                <td><label></label></td>
+                <td> You have been logged out.</td>
+            </tr>
+            </c:if>
+            <tr>
+                <td><label>Username:</label></td>
+                <td><input type="text" name="username"/></td>
             </tr>
             <tr>
-                <td><label>Last name:</label></td>
-                <td><form:input path="lastName"/></td>
-            </tr>
-            <tr>
-                <td><label>Email:</label></td>
-                <td><form:input path="email"/></td>
+                <td><label>Password:</label></td>
+                <td><input type="password" name="password"/></td>
             </tr>
             <tr>
                 <td><label></label></td>
-                <td><input type="submit" value="Submit" class="save"></td>
+                <td><input type="submit" value="Login" class="save"></td>
             </tr>
             </tbody>
         </table>
     </form:form>
-
-    <div style="clear: both;"></div>
-
-    <p>
-        <a href="${ctx}/customer/list">Back to list</a>
-    </p>
-
 </div>
 </body>
 </html>

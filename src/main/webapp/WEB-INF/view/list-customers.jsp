@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <html>
 <head>
     <title>Customers List</title>
@@ -17,9 +18,13 @@
 <div id="container">
     <div id="content">
 
-        <input type="button" value="Add Customer"
-               onclick="window.location.href='showFormForAdd'; return false;"
-               class="add-button">
+        <sec:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
+            <input type="button" value="Add Customer"
+                   onclick="window.location.href='showFormForAdd'; return false;"
+                   class="add-button">
+        </sec:authorize>
+
+
 
         <form:form action="search" method="get">
             Search customer: <input type="text" name="searchName">
@@ -46,15 +51,26 @@
                     <td>${customer.lastName}</td>
                     <td>${customer.email}</td>
                     <td>
-                        <a href="${updateLink}">UPDATE</a>
-                        |
-                        <a href="${deleteLink}" onclick="if (!(confirm('Are you sure?'))) return false">DELETE</a>
+                        <sec:authorize access="hasAnyRole('ADMIN', 'MANAGER')">
+                            <a href="${updateLink}">UPDATE</a>
+                        </sec:authorize>
+                        <sec:authorize access="hasRole('ADMIN')">
+                            |
+                            <a href="${deleteLink}" onclick="if (!(confirm('Are you sure?'))) return false">DELETE</a>
+                        </sec:authorize>
                     </td>
                 </tr>
             </c:forEach>
         </table>
     </div>
+
+    <p></p>
+
+    <form:form action="${pageContext.request.contextPath}/logout" method="post">
+        <input type="submit" value="Logout" class="add-button"/>
+    </form:form>
 </div>
+
 
 </body>
 </html>

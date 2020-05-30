@@ -16,6 +16,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -24,13 +25,17 @@ import java.util.logging.Logger;
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
 @ComponentScan("com.example.springdemo")
-@PropertySource({"classpath:persistence-mysql.properties"})
+@PropertySource({"classpath:persistence-mysql.properties",
+                 "classpath:security-persistence-mysql.properties"})
 public class AppConfig implements WebMvcConfigurer {
 
-    @Autowired
     private Environment env;
-
     private Logger logger = Logger.getLogger(getClass().getName());
+
+    @Autowired
+    public void setEnv(Environment env) {
+        this.env = env;
+    }
 
     @Bean
     public ViewResolver viewResolver() {
@@ -71,11 +76,41 @@ public class AppConfig implements WebMvcConfigurer {
         return myDataSource;
     }
 
+    @Bean
+    public DataSource securityDataSource() {
+
+        // create connection pool
+        ComboPooledDataSource dataSource = new ComboPooledDataSource();
+
+        // set the jdbc driver
+        try {
+            dataSource.setDriverClass(env.getProperty("security.jdbc.driver"));
+        } catch (PropertyVetoException exc) {
+            throw new RuntimeException(exc);
+        }
+
+        // for sanity's sake, let's log url and user ... just to make sure we are reading the data
+        logger.info("security.jdbc.url=" + env.getProperty("security.jdbc.url"));
+        logger.info("security.jdbc.user=" + env.getProperty("security.jdbc.user"));
+
+        // set database connection props
+        dataSource.setJdbcUrl(env.getProperty("security.jdbc.url"));
+        dataSource.setUser(env.getProperty("security.jdbc.user"));
+        dataSource.setPassword(env.getProperty("security.jdbc.password"));
+
+        // set connection pool props
+        dataSource.setInitialPoolSize(getIntProperty("security.connection.pool.initialPoolSize"));
+        dataSource.setMinPoolSize(getIntProperty("security.connection.pool.minPoolSize"));
+        dataSource.setMaxPoolSize(getIntProperty("security.connection.pool.maxPoolSize"));
+        dataSource.setMaxIdleTime(getIntProperty("security.connection.pool.maxIdleTime"));
+
+        return dataSource;
+    }
+
     private Properties getHibernateProperties() {
-
         // set hibernate properties
-        Properties props = new Properties();
 
+        Properties props = new Properties();
         props.setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"));
         props.setProperty("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
 
@@ -87,18 +122,12 @@ public class AppConfig implements WebMvcConfigurer {
     // read environment property and convert to int
 
     private int getIntProperty(String propName) {
-
         String propVal = env.getProperty(propName);
-
-        // now convert to int
-        int intPropVal = Integer.parseInt(propVal);
-
-        return intPropVal;
+        return Integer.parseInt(Objects.requireNonNull(propVal));
     }
 
     @Bean
     public LocalSessionFactoryBean sessionFactory() {
-
         // create session factory
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
 

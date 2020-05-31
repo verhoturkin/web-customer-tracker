@@ -33,6 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/customer/delete").hasRole("ADMIN")
             .antMatchers("/customer/**").hasRole("EMPLOYEE")
             .antMatchers("/resources/**").permitAll()
+            .antMatchers("/api/**").permitAll()
             .and().formLogin().loginPage("/showLoginPage").loginProcessingUrl("/authUser").permitAll()
             .and().logout().permitAll()
             .and().exceptionHandling().accessDeniedPage("/access-denied");
